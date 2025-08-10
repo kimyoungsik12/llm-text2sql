@@ -1,0 +1,16 @@
+databases:
+  - name: sales
+    host: 127.0.0.1
+    port: 3306
+    user: root
+    password: password
+    database: sales
+    description: "매출 관련 DB"
+  - name: hr
+    host: 127.0.0.1
+    port: 3306
+    user: root
+    password: password
+    database: hr
+    description: "인사 DB"
+
