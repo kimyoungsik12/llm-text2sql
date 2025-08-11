@@ -1,22 +1,70 @@
 ## 자연어 → SQL → 답변 FastAPI 서버
 
 ### 실행 방법
-1) 의존성 설치
+
+#### 1) 의존성 설치
 ```bash
 pip install -r requirements.txt
 ```
 
-2) 환경설정
+#### 2) 환경설정
 ```bash
 cp .env.example .env
 cp config/databases.yaml.example config/databases.yaml
 ```
-`.env`에서 `LLM_PROVIDER`를 `ollama` 또는 `openai`로 선택하세요.
 
-3) 서버 실행
+`.env`에서 `LLM_PROVIDER`를 선택하세요:
+- `vllm`: GPU 2장 사용, 고성능 추론 (권장)
+- `ollama`: 단일 GPU, 간단한 설정
+- `openai`: OpenAI API 사용
+
+#### 3) vLLM 서버 시작 (GPU 2장 사용)
+```bash
+# GPU 0, 1번만 사용하여 vLLM 서버 시작
+./start_vllm_server.sh
+
+# 또는 수동으로 실행
+CUDA_VISIBLE_DEVICES=0,1 python -m vllm.entrypoints.openai.api_server \
+    --model Qwen/Qwen3-7B-Instruct \
+    --tensor-parallel-size 2 \
+    --gpu-memory-utilization 0.9 \
+    --host 0.0.0.0 \
+    --port 8001
+```
+
+#### 4) vLLM 서버 관리
+```bash
+# 서버 상태 확인
+./check_vllm_status.sh
+
+# 서버 안전 종료
+./stop_vllm_server.sh
+
+# 서버 재시작 (기존 프로세스 자동 종료 후 시작)
+./start_vllm_server.sh
+```
+
+#### 5) FastAPI 서버 실행
 ```bash
 uvicorn app.main:app --reload
 ```
+
+### LLM 제공자별 설정
+
+#### vLLM (GPU 2장, 권장)
+- **장점**: 고성능, 배치 처리, 메모리 효율성
+- **설정**: `LLM_PROVIDER=vllm`
+- **포트**: 8001 (vLLM), 8000 (FastAPI)
+
+#### Ollama (GPU 1장)
+- **장점**: 간단한 설정, 안정성
+- **설정**: `LLM_PROVIDER=ollama`
+- **포트**: 11434 (Ollama), 8000 (FastAPI)
+
+#### OpenAI API
+- **장점**: 클라우드 기반, 높은 품질
+- **설정**: `LLM_PROVIDER=openai`
+- **필요**: API 키 설정
 
 ### 엔드포인트
 - POST `/api/query`
