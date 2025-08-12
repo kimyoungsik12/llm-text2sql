@@ -1,0 +1,20 @@
+[
+  {
+    "category_id": 1,
+    "change": 240,
+    "created_at": "2025-08-03T09:00:00.000Z",
+    "piggery_id": "후기",
+    "herd_id": "2025년 08월 03일 1방 돈군",
+    "is_created": true,
+    "arrival_room_id": "1방"
+  },
+  {
+    "category_id": 1,
+    "change": 60,
+    "created_at": "2025-08-03T09:00:00.000Z",
+    "piggery_id": "후기",
+    "herd_id": "2025년 08월 03일 2방 돈군",
+    "is_created": true,
+    "arrival_room_id": "2방"
+  }
+]
