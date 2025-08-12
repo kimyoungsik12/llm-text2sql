@@ -7,7 +7,7 @@ from .routes.query import router as query_router
 from .services.logger import AppLogger
 
 
-app = FastAPI(title="NL2SQL Answer Server")
+app = FastAPI(title="LLM TEXT2SQL Answer Server")
 
 app.add_middleware(
   CORSMiddleware,

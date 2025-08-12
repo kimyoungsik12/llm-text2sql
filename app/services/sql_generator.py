@@ -33,14 +33,21 @@ class SQLGenerator:
   def _extract_sql(text: str) -> str:
     m = SQL_BLOCK_PATTERN.search(text)
     if m:
-      return m.group(1).strip().rstrip(";") + ";"
-    # no block, take first line/paragraph
-    sql = text.strip()
-    # strip surrounding backticks if any
-    sql = sql.strip("`")
-    # ensure ending semicolon for mysql compatibility
-    if not sql.endswith(";"):
-      sql += ";"
+      sql = m.group(1).strip().rstrip(";") + ";"
+    else:
+      # no block, take first line/paragraph
+      sql = text.strip()
+      # strip surrounding backticks if any
+      sql = sql.strip("`")
+      # ensure ending semicolon for mysql compatibility
+      if not sql.endswith(";"):
+        sql += ";"
+    
+    # 개행문자 제거하고 한 줄로 만들기
+    sql = sql.replace('\n', ' ').replace('\r', ' ')
+    # 여러 개의 공백을 하나로 정리
+    sql = ' '.join(sql.split())
+    
     return sql
 
   async def generate_sql(self, question: str, db_name: str) -> tuple[str, str]:
