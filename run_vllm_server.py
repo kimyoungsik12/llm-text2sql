@@ -12,7 +12,7 @@ import subprocess
 MODEL_DIR = "/models/Qwen2.5-7B-Instruct"
 HOST = "0.0.0.0"
 PORT = "8001"
-TP = "2"                 # tensor-parallel-size (GPU 2장)
+TP = "4"                 # tensor-parallel-size (GPU 2장)
 MAX_MODEL_LEN = "8192"
 GPU_UTIL = "0.9"
 
@@ -24,7 +24,7 @@ def main():
         sys.exit(1)
 
     # 사용할 GPU 고정 (필요 시 바꾸세요: "0,1" / "0" 등)
-    os.environ.setdefault("CUDA_VISIBLE_DEVICES", "0,1")
+    os.environ.setdefault("CUDA_VISIBLE_DEVICES", "0,1,2,3")
     
     # 시간대 설정 (한국 시간)
     os.environ["TZ"] = "Asia/Seoul"
